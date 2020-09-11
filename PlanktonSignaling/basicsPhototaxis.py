@@ -189,11 +189,11 @@ class Plankton(Background_Field):
         
         #confinement in y direction
         pos += self.k*vel
-        pos[:,0] = np.mod(pos[:,0],Swimmers.L)
-        Bel0 = [j for j in range(Swimmers.num) if pos[j,1] < 0]
-        AbvL = [j for j in range(Swimmers.num) if pos[j,1] > Swimmers.L]
-        pos[Bel0,1] = -1*pos[Bel0,1]
-        pos[AbvL,1] -= 2*(pos[AbvL,1]-Swimmers.L)
+        pos[:,0] = np.mod(pos[:,0],self.L)
+        Bel0 = [j for j in range(self.num) if pos[j,1] < 0]
+        AbvL = [j for j in range(self.num) if pos[j,1] > self.L]
+        pos[Bel0,1] -= 2*pos[Bel0,1]
+        pos[AbvL,1] -= 2*(pos[AbvL,1]-self.L)
                 
     def Update(self, vectors, pos, vel):
         PlankDensity = self.density*self.L**2/self.num

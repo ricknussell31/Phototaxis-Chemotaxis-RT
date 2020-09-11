@@ -15,17 +15,18 @@ jupyter:
 ```{python}
 from scipy import *
 import numpy as np
+from matplotlib import animation
 import matplotlib.pyplot as plt
-import PlanktonSignaling.basics as PS
+import PlanktonSignaling.basicsPhototaxis as PS
 import PlanktonSignaling.Deposition as DP
 ```
 
 ```{python}
 meshsize = 100 #Chemical Mesh size
-numb = 30**2 #Number of plankton in simulation
+numb = 3**2 #Number of plankton in simulation
 LL = 10 #Length of domain [0,L] x [0,L]
 dt = 0.02 #Time-stepping size
-TotalTime = 30 #Total time 
+TotalTime = 10 #Total time 
 
 simTime = int(TotalTime/dt) #Number of timesteps in order to achieve total Time 
 
@@ -61,8 +62,8 @@ POS[0,:,:] = pos
 ```
 
 ```{python}
-for k in range(1,simTime+1):
-        Swimmers.UpdateSlice(Swimmers.scalar,pos,vel)
+for k in range(1,simTime):
+        Swimmers.Update(Swimmers.scalar,pos,vel)
         CHEM[k,:,:] = Swimmers.Meshed()
         POS[k,:,:] = pos
 ```
@@ -75,7 +76,7 @@ fig   = plt.figure()
 ax    = plt.subplot(1,1,1)
 field = ax.pcolormesh(Swimmers.xm,Swimmers.ym,CHEM[0])
 field.set_clim(0.008,0.012)
-dots, = ax.plot([], [], 'r.',MarkerSize=.55)
+dots, = ax.plot([], [], 'r.',MarkerSize=10)
 fig.colorbar(field)
 
 plt.suptitle(r'$d_1 = {0},d_2={1}$'.format(Swimmers.d1, Swimmers.d2), fontsize = 10)
@@ -93,7 +94,7 @@ def animate(k):
 
     return dots,field
     
-anim = matplotlib.animation.FuncAnimation(fig,animate,frames=range(0,simTime,1),
-                                          interval=400,blit=False,repeat=False)
+anim = animation.FuncAnimation(fig,animate,frames=range(0,simTime,1),
+                                          interval=20,blit=False,repeat=False)
 plt.show()
 ```
